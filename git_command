@@ -1,0 +1,150 @@
+# 基于某个文件夹新建git仓库
+git init
+
+
+# 比较两个分支所有更改的文件列表
+git diff branch1 branch2 --stat
+
+# 用一行信息显示git 日志
+git log --oneline
+
+# 查看所有分支的操作记录, log是提交记录
+git reflog
+
+# git回退
+git reset HEAD^            # 回退所有内容到上一个版本  
+git reset HEAD^ hello.php  # 回退 hello.php 文件的版本到上一个版本  
+git  reset  052e           # 回退到指定版本
+
+--soft 参数用于回退到某个版本
+git reset --soft HEAD
+--hard 参数撤销工作区中所有未提交的修改内容，将暂存区与工作区都回到上一次版本，并删除之前的所有信息提交
+git reset --hard HEAD
+
+HEAD 说明：
+HEAD 表示当前版本
+HEAD^ 上一个版本
+HEAD^^ 上上一个版本
+HEAD^^^ 上上上一个版本
+以此类推...
+
+可以使用 ～数字表示
+HEAD~0 表示当前版本
+HEAD~1 上一个版本
+HEAD^2 上上一个版本
+HEAD^3 上上上一个版本
+以此类推...
+
+–-hard:慎用该选项，会丢弃工作区和暂存区的修改，对于未追踪的文件没有影响。可以使用git reflog找到操作的版本再调用--hard回退
+
+–-mixed:默认参数，可选择不写，保留当前所有代码，包括工作区和暂存区，并将这些代码一并放入工作区，只是HEAD指向发生了变化，指向命令指定的版本。
+
+–-soft:略复杂
+工作区：修将会原样保留，
+暂存区：如果回退之后的版本追踪了该文件，那么，将原模原样保留在暂存区，如果回退之后的版本未追踪该文件，该文件仍然保留在暂存区，只是变为新增文件，内容为保留最后修改的结果。
+未被追踪的文件不受影响。
+
+
+# 强推，假如本地的版本通过回退比远程的要旧，不能推则使用强推可以推上去
+git push -f
+
+
+# git取消工作区的修改
+git checkout -f 文件或者文件夹名，实质上是强制查看
+git restore 才是丢弃工作区的修改
+git checkout -- 文件路径    也可以丢弃工作区的修改, 不指定路径就是全部
+
+# git取消暂存区的修改
+git restore --staged
+
+# git 反做
+只会反做commit-id对应的内容，然后重新commit一个信息，不会影响其他的commit内容
+git revert commit-id
+反做多个
+git revert commit-idA..commit-idB
+
+git revert -n 与git revert用法一致，区别是-n不让revert生成新的提交，而是修改工作树和索引
+
+git revert相当于是反做对应提交的内容，比如增加变减少，减少变增加然后将这些内容放入工作区
+revert 完要add + commit
+如果revert发生冲突
+git revert --abort 取消revert返回revert前
+git revert --quit 保留revert后的车祸现场(无视冲突，可提交)
+git revert --continue 继续revert
+
+
+# 远程追踪关系
+git pull  <远程主机名> <远程分支名>:<本地分支名>
+相当于:
+git fetch <远程主机名> <远程分支名>
+git merge <远程主机名>/<远程分支名>
+
+如果当前分支只有一个追踪关系
+git pull
+手动建立追踪关系
+git branch --set-upstream-to=origin/remote_branch  your_branch
+清理远程已删除本地还存在的分支
+git fetch -p
+清理远程已删除本地还存在的分支并且pull
+git pull -p
+
+
+# 取消暂存区修改
+git restore --staged
+
+
+# 取消工作区修改
+git checkout --文件路径
+
+# 查看某个文件的提交改动
+git show commit_id 文件路径
+
+<------------------------------------ 解teacher_course_api em -------------------------------->
+git reset commit_id thrift_gen/em
+git checkout -f thrift_gen/em
+
+
+
+# git stash
+
+备份当前工作区的内容，保存到git 栈中，从最近的一次commit中读取相关内容
+
+
+# git stash pop
+从git栈中获取到最近一次stash进去的内容，恢复工作区的内容。。获取之后，会删除栈中对应的stash。。
+
+由于可能会stash多次，git使用栈管理，我们可以使用git stash list查看所有的stash
+
+# git stash list
+显示git栈中的所有工作区内容的备份，
+
+比如使用git stash apply stash@{1}，就可以把版本号为stash@{1}的备份取出，不会删除对应的stash。。0为最新版本
+
+# git stash clear
+清空git栈
+
+# git stash drop stash@{?} 删除某个stash
+
+
+# git remote 
+
+Git添加远程仓库:
+git remote add 自定义名字 ssh@ip或者域名:仓库目录
+git remote add 自定义名字 git@ip或者域名:仓库目录
+
+
+展示远程主机信息
+git remote show 名字
+
+
+显示所有远程仓库
+git remote -v
+
+删除远程仓库
+git remote rm name
+
+
+例如
+
+
+

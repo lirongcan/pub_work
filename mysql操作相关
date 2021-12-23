@@ -1,0 +1,54 @@
+# 安装mysql后，启动mysql
+
+找到msyql的安装目录，前往mysql/版本文件夹/bin
+使用mysql.server start启动
+mysql.server stop关闭
+
+# 解决mysql报错 ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2)
+
+我们连接数据库使用的主机名参数为“localhost”，或者未使用主机名参数、服务器默认使用“localhost”做为主机名。 
+
+当使用主机名参数为“localhost”连接mysql服务端时，mysql客户端会认为是连接本机，所以会尝试以socket文件方式进行连接(socket文件连接方式，比“ip：端口”方式效率更高)，这时根据配置文件“/etc/mysql.cnf”的路径，未找到相应的socket文件，就会引发此错误。
+
+
+解决方法1:
+因为MySQL的配置文件可以指定默认sock文件位置，因此只要修改任一 my.cnf为：
+
+[mysqld]
+socket=sock文件位置
+
+[client]
+socket=sock文件位置
+
+[mysql]
+socket=sock文件位置
+
+查看真实sock文件位置的方法：lsof -c mysql | grep 'sock'
+
+解决方法2:
+将找到的真实的sock文件软链接到mysql默认的sock文件位置
+ln -s 真实位置/文件名 默认位置/文件名
+
+mysql的默认sock文件位置看报错提示即可
+
+
+# 打开mysql客户端
+
+mysql -hlocalhost -uroot -p
+
+或 mysql -uroot -p
+
+
+
+# 查看mysql的配置文件
+mysql --help|grep 'my.cnf'
+
+
+
+
+
+# 先刷数据再建立索引
+
+# delete和update操作要加limit 1
+
+

@@ -1,0 +1,13 @@
+# 打开redis服务器
+
+找到redis安装目录
+
+./redis-server
+
+# 打开redis客户端
+
+./redis-cli
+
+# 关闭redis
+
+在redis客户端输入命令 shutdown 和 quit
